@@ -28,7 +28,7 @@ module Extensions
         protected
 
         def serialize_template
-          if self.new_record? || self.raw_template_changed?
+          if self.new_record? || self.raw_template_changed? || true
             @template_changed = true
 
             @parsing_errors = []

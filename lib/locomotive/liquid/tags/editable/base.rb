@@ -30,7 +30,8 @@ module Locomotive
                 :default_content => default_content,
                 :assignable => @options[:assignable],
                 :disabled => false,
-                :from_parent => false
+                :from_parent => false,
+                :inherited => @options[:inherited]
               }, document_type)
             end
           end

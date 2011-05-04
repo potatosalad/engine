@@ -6,7 +6,8 @@ class EditableShortText < EditableElement
   ## methods ##
 
   def content
-    self.read_attribute(:content).blank? ? self.default_content : self.read_attribute(:content)
+    el = inherited_editable_element_or_self
+    el.read_attribute(:content).blank? ? el.default_content : el.read_attribute(:content)
   end
 
 end
