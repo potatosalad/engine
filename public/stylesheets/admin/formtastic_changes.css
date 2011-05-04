@@ -423,16 +423,27 @@ form.content_instance fieldset ol li.text textarea {
   width: 75%;
 }
 
-form.formtastic fieldset ol li.file p.remove {
+form.formtastic fieldset ol li.inherited input.disabled,
+form.formtastic fieldset ol li.inherited textarea.disabled {
+  background-color: #EBEDF4;
+  background-image: none;
+}
+
+form.formtastic fieldset ol li.inherited p.override input { width: auto; }
+
+form.formtastic fieldset ol li.file p.remove,
+form.formtastic fieldset ol li p.override {
   margin: 5px 0 0 20%;
 }
 
-form.formtastic fieldset ol li.file p.remove a {
+form.formtastic fieldset ol li.file p.remove a,
+form.formtastic fieldset ol li p.override a {
   text-decoration: none;
   color: #333;
 }
 
-form.formtastic fieldset ol li.file p.remove a:hover { text-decoration: underline; }
+form.formtastic fieldset ol li.file p.remove a:hover,
+form.formtastic fieldset ol li p.override a:hover { text-decoration: underline; }
 
 /* ___ my account ___ */
 

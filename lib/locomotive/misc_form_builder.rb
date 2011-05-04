@@ -25,6 +25,32 @@ module Locomotive
       template.content_tag(:li, template.find_and_preserve(html), :style => "#{options[:style]}", :class => "#{options[:css]} #{'error' unless @object.errors[name].empty?}")
     end
 
+    def inherited_input(name, options = {})
+      if @object.inherited? and not @object.original?
+        inputs_hash = { :string => :text_field, :text => :text_area }
+        as       = options[:as] || :string
+        input_as = inputs_hash.has_key?(as) ? inputs_hash[as] : as
+
+        custom_input_options = options[:custom_input] || {}
+        custom_input_options.reverse_merge!(:hint => options[:hint], :label => options[:label])
+        custom_input_options[:css] ||= "#{options[:css]} #{as} optional inherited"
+
+        input_options = { :disabled => !@object.override_original? }
+        input_options.merge!(options[:input_html] || {})
+        input_options[:class] = "#{input_options[:class]} #{@object.override_original? ? nil : 'disabled'}"
+
+        custom_input(name, custom_input_options) do
+          html = self.send(input_as, name, input_options)
+          html += (template.content_tag(:p, :class => 'override') do
+            template.content_tag(:span, "Override #{check_box(:override)}".html_safe)
+          end)
+          html
+        end
+      else
+        input(name, options)
+      end
+    end
+
     def inline_errors_on(method, options = nil)
       if render_inline_errors?
         errors = @object.errors[method.to_sym]

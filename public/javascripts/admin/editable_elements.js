@@ -25,6 +25,22 @@ $(document).ready(function() {
     }
   }, []);
 
-  $('textarea.html').tinymce(TinyMceDefaultSettings);
+  $('textarea.html:enabled').tinymce(TinyMceDefaultSettings);
+
+  var inheritedTextAreas = new Array();
+  $('#editable-elements .inherited .override input[type=checkbox]').change(function() {
+    var input = $(this).parents('.inherited').children('input[type=text], textarea');
+    if (input.is('textarea') && !inheritedTextAreas[input])
+      inheritedTextAreas[input] = input.tinymce(TinyMceDefaultSettings);
+    if ($(this).attr('checked')) {
+      input.removeClass('disabled').removeAttr('disabled');
+      if (input.is('textarea'))
+        inheritedTextAreas[input].tinymce().show();
+    } else {
+      input.addClass('disabled').attr('disabled', 'disabled');
+      if (input.is('textarea'))
+        inheritedTextAreas[input].tinymce().hide();
+    }
+  });
 
 });

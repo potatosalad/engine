@@ -19,9 +19,9 @@
                     = f.fields_for 'editable_elements', el, :child_index => el._index do |g|
                       - case el
                         - when EditableLongText
-                          = g.input :content, :label => el.slug.humanize, :hint => el.hint, :as => :text, :input_html => { :class => 'html' }
+                          = g.inherited_input :content, :label => el.slug.humanize, :hint => el.hint, :as => :text, :input_html => { :class => 'html' }
                         - when EditableShortText
-                          = g.input :content, :label => el.slug.humanize, :hint => el.hint
+                          = g.inherited_input :content, :label => el.slug.humanize, :hint => el.hint
                         - when EditableFile
                           = g.custom_input :source, :label => el.slug.humanize, :hint => el.hint, :css => 'file' do
                             = g.file_field :source
@@ -33,3 +33,8 @@
                                   &nbsp;/&nbsp;
                                   != t('admin.pages.form.delete_file')
                                   = g.check_box :remove_source
+                            - elsif el.inherited? and not el.original?
+                              %p.inherited
+                                %strong
+                                  inherited:
+                                  = link_to File.basename(el.content), el.content
