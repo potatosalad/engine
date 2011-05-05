@@ -28,7 +28,7 @@ module Extensions
         protected
 
         def serialize_template
-          if self.new_record? || self.raw_template_changed? || true
+          if self.new_record? || self.raw_template_changed? || true # FIXME: always serializes template for inheritance
             @template_changed = true
 
             @parsing_errors = []
