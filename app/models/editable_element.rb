@@ -30,22 +30,22 @@ class EditableElement
       override? or original?
     end
 
-    protected
-
     def inherited_editable_element_or_self
-      (find_editable_element_from_ancestors if inherited? and not original?) || self
+      (find_editable_element_from_ancestors if inherited? and not override_original?) || self
     end
+
+    protected
 
     def find_editable_element_from_ancestors
       return self if self.page.root?
-      el = self
+      element = nil
       self.page.ancestors.each do |p|
-        if p.find_editable_element(self.block, self.slug) and el.original?
-          el = p
-          break
+        el = p.find_editable_element(self.block, self.slug)
+        if el.present? and el.override_original?
+          element = el
         end
       end
-      return el
+      return element || self
     end
 
 end

@@ -25,9 +25,10 @@ module Locomotive
       template.content_tag(:li, template.find_and_preserve(html), :style => "#{options[:style]}", :class => "#{options[:css]} #{'error' unless @object.errors[name].empty?}")
     end
 
-    def inherited_input(name, options = {})
+    def inherited_input(name, options = {}, &block)
+      inputs_hash = { :string => :text_field, :text => :text_area, :file => :file_field }
+
       if @object.inherited? and not @object.original?
-        inputs_hash = { :string => :text_field, :text => :text_area }
         as       = options[:as] || :string
         input_as = inputs_hash.has_key?(as) ? inputs_hash[as] : as
 
@@ -42,8 +43,18 @@ module Locomotive
         custom_input(name, custom_input_options) do
           html = self.send(input_as, name, input_options)
           html += (template.content_tag(:p, :class => 'override') do
-            template.content_tag(:span, "Override #{check_box(:override)}".html_safe)
+            template.content_tag(:span) do
+              parent_page = @object.inherited_editable_element_or_self.page
+              out = ''
+              out += template.link_to(File.basename(@object.content), @object.content) if as == :file
+              out += " from: "
+              out += template.link_to(parent_page.slug, template.edit_admin_page_path(parent_page))
+              out += "&nbsp;/&nbsp;Override "
+              out += check_box(:override)
+              out.html_safe
+            end
           end)
+          html += template.capture(&block) || '' if block
           html
         end
       else
