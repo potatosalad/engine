@@ -60,6 +60,7 @@ javascripts:
   edit_page:
     - public/javascripts/admin/plugins/tiny_mce/tinymce.js
     - public/javascripts/admin/editable_elements.js
+    - public/javascripts/admin/plugins/menu_toggler.js
     - public/javascripts/admin/pages.js
   image_picker:
     - public/javascripts/admin/plugins/json2.js
